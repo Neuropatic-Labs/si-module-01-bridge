@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Module01KinematicTelemetry",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "frame_id",
+    "gaze_vector",
+    "target_xy_normalized",
+    "target_identifier",
+    "gaze_locked",
+    "reach_transit_active",
+    "intent_directive",
+    "measured_lead_time_ms",
+    "confidence"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "number",
+      "description": "POSIX epoch timestamp in seconds (100-microsecond resolution) of optical capture"
+    },
+    "frame_id": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonic 60Hz frame sequence counter for watchdog heartbeat tracking"
+    },
+    "gaze_vector": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 3,
+      "maxItems": 3,
+      "description": "Normalized [X, Y, Z] unit vector of user foveal gaze direction in the sensor optical frame"
+    },
+    "target_xy_normalized": {
+      "type": "array",
+      "items": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "Planar workspace intersection coordinates [0.0 - 1.0] mapped to the calibrated homography plane"
+    },
+    "target_identifier": {
+      "type": "string",
+      "description": "Discrete target interaction zone or service handoff coordinate ID"
+    },
+    "gaze_locked": {
+      "type": "boolean",
+      "description": "True when foveal fixation stability satisfies the pre-motor spatio-temporal dwell filter"
+    },
+    "reach_transit_active": {
+      "type": "boolean",
+      "description": "True when early ballistic limb kinematics confirm active transit toward the fixated target"
+    },
+    "intent_directive": {
+      "type": "string",
+      "enum": [
+        "IDLE",
+        "PREEMPTIVE_ORIENT_AND_EXTEND",
+        "HANDOFF_ZONE_OCCUPIED",
+        "ACTIVE_DECELERATION",
+        "HOLD"
+      ],
+      "description": "Discrete advisory machine kinematic directive"
+    },
+    "measured_lead_time_ms": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Elapsed pre-motor lead-time buffer (ms) clocked from initial ocular fixation lock to physical boundary entry"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Multi-signal spatial confidence metric"
+    }
+  },
+  "additionalProperties": false
+}
