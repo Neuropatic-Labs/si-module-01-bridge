@@ -11,7 +11,7 @@
 >
 > **Module 01** captures this deterministic kinematic lead time at the edge and translates it into 60Hz advisory machine directives, giving ROS 2 motion planners the foresight to pre-spool actuators and synchronize smoothly rather than freeze.
 
-https://github.com/user-attachments/assets/4a85c5f7-9fec-4a04-ba12-6d8227e73b67
+https://github.com/user-attachments/assets/cb6df29b-d4b1-4ea2-bc12-6b07dfd70377
 
 Open-source client integration bridges, wire schemas, and subscriber adapters for **Module 01**—Neuropatic's pre-motor kinematic telemetry engine.
 
