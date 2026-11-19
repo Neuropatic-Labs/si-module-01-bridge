@@ -7,15 +7,15 @@
 > ### Why Pre-Motor Telemetry?
 > Today's commercial service robots and automated interactive stations are blind to human intent until it is too late. They rely on reactive tripwires, optical proximity triggers, and bounding boxes that only fire after a person has already reached into a handoff zone. By then, mechanical rotor and gearbox inertia (`150–300 ms`) takes over, forcing an awkward hesitation stutter or abrupt pause that disrupts fluid interaction.
 >
-> Human physical motion does not happen instantaneously. Long before a person reaches toward a counter, kiosk, or handoff tray, their gaze locks onto the target and their motor system initiates a ballistic reach trajectory. This anticipatory kinematic sequence gives downstream controllers **200 to 450 milliseconds** of advance notice.
+> Human physical motion does not happen instantaneously. Long before a person reaches toward a counter, kiosk, or handoff tray, their gaze locks onto the target and their motor system initiates a ballistic reach trajectory. This anticipatory kinematic sequence gives downstream controllers **200 to 300 milliseconds** of advance notice.
 >
 > **Module 01** captures this deterministic kinematic lead time at the edge and translates it into 60Hz advisory machine directives, giving ROS 2 motion planners the foresight to pre-spool actuators and synchronize smoothly rather than freeze.
 
 https://github.com/user-attachments/assets/cb6df29b-d4b1-4ea2-bc12-6b07dfd70377
 
-Open-source client integration bridges, wire schemas, and subscriber adapters for **Module 01**—Neuropatic's pre-motor kinematic telemetry engine.
+Open-source client integration bridges, wire schemas, and subscriber adapters for **Module 01**, Neuropatic's pre-motor kinematic telemetry engine.
 
-Module 01 executes as an on-premise, compiled edge container (`si-module-01:rc1`) that ingests non-contact optical telemetry to decode human pre-motor kinematic intent 200–450 ms before physical contact or boundary entry occurs. Advisory intent directives are broadcast locally over low-latency WebSockets at 60Hz.
+Module 01 executes as an on-premise, compiled edge container (`si-module-01:rc1`) that ingests non-contact optical telemetry to decode human pre-motor kinematic intent 200–300 ms before physical contact or boundary entry occurs. Advisory intent directives are broadcast locally over low-latency WebSockets at 60Hz.
 
 This repository provides client-side bindings to consume that stream directly into physical robot motion planners.
 
@@ -133,8 +133,8 @@ def on_intent_directive(msg):
     directive = telemetry["intent_directive"]
     target = telemetry["target_identifier"]
 
-    if directive == "PREEMPTIVE_ORIENT_AND_EXTEND" and telemetry["confidence"] >= 0.85:
-        # 200-450ms head start: Pre-spool joint actuators & orient toward target
+   if directive == "PREEMPTIVE_ORIENT_AND_EXTEND" and telemetry["confidence"] >= 0.85:
+        # 200-300 ms head start: Pre-spool joint actuators or adjust approach trajectory
         motion_planner.pre_align_to_zone(target, velocity_scale=0.35)
 
     elif directive == "HANDOFF_ZONE_OCCUPIED":
@@ -142,7 +142,7 @@ def on_intent_directive(msg):
         motion_planner.execute_handoff_completion(target)
 
     elif directive in ("HOLD", "ACTIVE_DECELERATION"):
-        # Watchdog dropout or anomalous reach: Dampen velocity and hold position
+        # Watchdog dropout or anomalous motion: Dampen arm or base velocity and hold position
         motion_planner.dampen_and_hold()
 ```
 
@@ -154,12 +154,13 @@ Neuropatic Research Laboratories LLC provides qualified commercial and service r
 
 - **Container Binary:** Pre-compiled, cryptographically signed `si-module-01:rc1` edge container image.
 - **On-Site Calibration:** Zero-intrusion optical baseline verification against existing cycle times.
-- **Integration Templates:** Production Python/C++ ROS 2 nodes and MoveIt 2 configurations tailored to your runtime.
-
+- **Integration Templates:** Production Python/C++ ROS 2 nodes for manipulators (MoveIt 2) and mobile bases tailored to your runtime.
+    
 To initiate an evaluation sandbox:
 - **Contact:** pilots@neuropatic.com
 - **Web:** [neuropatic.com/api](https://neuropatic.com/api)
 
+*Roadmap Note: Module 01 is the foundational pre-motor intent layer of the Symbiotic Intelligence stack, with subsequent runtime modules scheduled for release across Q1 2027.*
 ---
 
 ### License
