@@ -4,7 +4,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![ROS 2](https://img.shields.io/badge/ROS_2-Humble%20%7C%20Iron%20%7C%20Jazzy-orange.svg)](https://docs.ros.org/)
 
-> **Live Interactive Demo & Benchmark:** Test the browser simulation, view the 234 ms benchmark capture, or request on-premise container access at **[neuropatic.com/api](https://neuropatic.com/api)**.
+> **Live Interactive Demo & Benchmark:** Test the browser simulation, view the benchmark capture (200–300 ms nominal lead time), or request on-premise container access at **[neuropatic.com/api](https://neuropatic.com/api)**.
 
 > ### Why Pre-Motor Telemetry?
 > Today's commercial service robots and automated interactive stations are blind to human intent until it is too late. They rely on reactive tripwires, optical proximity triggers, and bounding boxes that only fire after a person has already reached into a handoff zone. By then, mechanical rotor and gearbox inertia (`150–300 ms`) takes over, forcing an awkward hesitation stutter or abrupt pause that disrupts fluid interaction.
